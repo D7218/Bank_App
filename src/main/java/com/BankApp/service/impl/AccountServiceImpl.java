@@ -8,6 +8,9 @@ import com.BankApp.mapper.AccountMapper;
 import com.BankApp.repository.AccountRepo;
 import com.BankApp.service.AccountService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -59,6 +62,25 @@ public class AccountServiceImpl implements AccountService {
 		account.setBalance(total);
 		Account savedAccount = accountRepo.save(account);
 		return AccountMapper.mapToAccountDto(savedAccount);
+	}
+
+	@Override
+	public List<AccountDto> getAllAccounts() {
+		List<Account> accounts = accountRepo.findAll();
+		 return accounts.stream().map((account)-> AccountMapper.mapToAccountDto(account))
+				.collect(Collectors.toList());
+
+
+	}
+
+	@Override
+	public AccountDto deleteAccount(Long id) {
+		Account account = accountRepo
+				.findById(id)
+				.orElseThrow(() -> new RuntimeException("delete successfully"));
+		accountRepo.deleteById(id);
+
+		return null;
 	}
 
 

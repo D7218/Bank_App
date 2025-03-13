@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.BankApp.dto.AccountDto;
 import com.BankApp.service.AccountService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,6 +47,19 @@ public class AccountController {
 		double amount = request.get("amount");
 		AccountDto accountDto = accountService.withdrow(id, amount);
 		return ResponseEntity.ok(accountDto);
+
+	}
+	// Get All Account Rest Api
+	@GetMapping("/")
+	public ResponseEntity <List<AccountDto>>getAllAccount(){
+		List<AccountDto> accounts = accountService.getAllAccounts();
+		return ResponseEntity.ok(accounts);
+	}
+	// delete account
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String>deleteAccount( @PathVariable Long id){
+		AccountDto deleteAccount = accountService.deleteAccount(id);
+		return ResponseEntity.ok("Account is deleted success");
 
 	}
 	 
